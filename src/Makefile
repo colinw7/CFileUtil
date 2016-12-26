@@ -20,6 +20,7 @@ CTextFileUtil.cpp \
 OBJS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRC))
 
 CPPFLAGS = \
+-std=c++11 \
 -I$(INC_DIR) \
 -I../../CFile/include \
 -I../../COS/include \

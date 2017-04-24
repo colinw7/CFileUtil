@@ -62,12 +62,13 @@ getImageTypeFromName(const std::string &filename)
   else if (CStrUtil::casecmp(suffix, "ps"  ) == 0) return CFILE_TYPE_IMAGE_PS;
   else if (CStrUtil::casecmp(suffix, "rgb" ) == 0) return CFILE_TYPE_IMAGE_SGI;
   else if (CStrUtil::casecmp(suffix, "sgi" ) == 0) return CFILE_TYPE_IMAGE_SGI;
+  else if (CStrUtil::casecmp(suffix, "six" ) == 0) return CFILE_TYPE_IMAGE_SIX;
   else if (CStrUtil::casecmp(suffix, "tga" ) == 0) return CFILE_TYPE_IMAGE_TGA;
   else if (CStrUtil::casecmp(suffix, "tif" ) == 0) return CFILE_TYPE_IMAGE_TIF;
   else if (CStrUtil::casecmp(suffix, "xbm" ) == 0) return CFILE_TYPE_IMAGE_XBM;
   else if (CStrUtil::casecmp(suffix, "xpm" ) == 0) return CFILE_TYPE_IMAGE_XPM;
   else if (CStrUtil::casecmp(suffix, "xwd" ) == 0) return CFILE_TYPE_IMAGE_XWD;
-  else                                          return CFILE_TYPE_NONE;
+  else                                             return CFILE_TYPE_NONE;
 }
 
 bool

@@ -1,5 +1,5 @@
-#ifndef CFILE_UTIL_H
-#define CFILE_UTIL_H
+#ifndef CFileUtil_H
+#define CFileUtil_H
 
 typedef unsigned int   CIMAGE_INT32;
 typedef unsigned short CIMAGE_INT16;

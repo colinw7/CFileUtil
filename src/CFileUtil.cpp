@@ -302,20 +302,23 @@ getPrefix(CFileType type)
   return prefix;
 }
 
+namespace {
+#if 0
+static char file65_chars[] = "abcdefghijklmnopqrstuvwxyz"
+                             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                             "1234567890"
+                             "_.-";
+#endif
+static char file_chars[] = "abcdefghijklmnopqrstuvwxyz"
+                           "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                           "1234567890"
+                           "_.-+:;~@%";
+}
+
 bool
 CFileUtil::
 isBadFilename(const std::string &name)
 {
-//static char file65_chars[] = "abcdefghijklmnopqrstuvwxyz"
-//                             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-//                             "1234567890"
-//                             "_.-";
-
-  static char file_chars[] = "abcdefghijklmnopqrstuvwxyz"
-                             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                             "1234567890"
-                             "_.-+:;~@%";
-
   uint len = name.size();
 
   if (len == 0) return true;
@@ -328,4 +331,25 @@ isBadFilename(const std::string &name)
       return true;
 
   return false;
+}
+
+std::string
+CFileUtil::
+fixBadFilename(const std::string &name)
+{
+  std::string name1 = name;
+
+  uint len = name1.size();
+
+  if (len == 0) return "";
+
+  if (name1[0] == '-')
+    name1[0] = '_';
+
+  for (uint i = 0; i < len; ++i) {
+    if (strchr(file_chars, name1[i]) == NULL)
+      name1[i] = '_';
+  }
+
+  return name1;
 }

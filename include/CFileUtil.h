@@ -67,6 +67,8 @@ namespace CFileUtil {
   CIMAGE_INT16 swapBytes16(CIMAGE_INT16 i);
 
   bool isBadFilename(const std::string &name);
+
+  std::string fixBadFilename(const std::string &name);
 }
 
 #endif

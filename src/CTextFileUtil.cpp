@@ -215,7 +215,8 @@ int
 CFileUtil::
 tarCalculateChecksum(CTarHeader *hblock)
 {
-  strncpy(hblock->pdbuf.chksum, "        ", 8);
+  for (int i = 0; i < 8; ++i)
+    hblock->pdbuf.chksum[i] = ' ';
 
   int total = 0;
 

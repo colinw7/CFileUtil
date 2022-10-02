@@ -84,12 +84,12 @@ isELF(CFileBase *file)
 
   buffer[16] = '\0';
 
-  if (buffer[0] != 0x7f || strncmp((char *) &buffer[1], "ELF", 3) != 0)
+  if (buffer[0] != 0x7f || strncmp(reinterpret_cast<char *>(&buffer[1]), "ELF", 3) != 0)
     return CFILE_TYPE_NONE;
 
   short type;
 
-  if (! file->read((uchar *) &type, sizeof(type), NULL))
+  if (! file->read(reinterpret_cast<uchar *>(&type), sizeof(type), NULL))
     return CFILE_TYPE_NONE;
 
 #ifdef OS_LINUX
@@ -194,7 +194,7 @@ isTar(CFileBase *file)
   size_t     num;
   CTarHeader block;
 
-  if (! file->read((uchar *) block.dummy, sizeof(block), &num))
+  if (! file->read(reinterpret_cast<uchar *>(block.dummy), sizeof(block), &num))
     return CFILE_TYPE_NONE;
 
   if (num != sizeof(block))
@@ -221,7 +221,7 @@ tarCalculateChecksum(CTarHeader *hblock)
   int total = 0;
 
   for (int i = 0; i < CTAR_HEADER_SIZE; i++)
-    total += (int) hblock->dummy[i];
+    total += int(hblock->dummy[i]);
 
   return total;
 }
@@ -232,7 +232,7 @@ tarOctalFieldToInt(char *field, int field_size)
 {
   static char temp_string[32];
 
-  strncpy(temp_string, field, field_size);
+  strncpy(temp_string, field, uint(field_size));
 
   temp_string[field_size] = '\0';
 
@@ -249,7 +249,7 @@ tarOctalStringToInt(const std::string &str)
 
   sscanf(str1.c_str(), "%o", &integer);
 
-  return integer;
+  return int(integer);
 }
 
 CFileType

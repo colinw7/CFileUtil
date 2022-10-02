@@ -83,7 +83,7 @@ checkBMP(CFileBase *file)
   if (! file->read(buffer, 2, &num_read))
     return false;
 
-  if (strncmp((char *) buffer, "BM", 2) == 0)
+  if (strncmp(reinterpret_cast<char *>(buffer), "BM", 2) == 0)
     return true;
 
   return false;
@@ -101,7 +101,7 @@ checkGIF(CFileBase *file)
   if (! file->read(buffer, 3, &num_read))
     return false;
 
-  if (strncmp((char *) buffer, "GIF", 3) == 0)
+  if (strncmp(reinterpret_cast<char *>(buffer), "GIF", 3) == 0)
     return true;
 
   return false;
@@ -119,7 +119,7 @@ checkIFF(CFileBase *file)
   if (! file->read(buffer, 4, &num_read))
     return false;
 
-  if (strncmp((char *) buffer, "FORM", 4) == 0)
+  if (strncmp(reinterpret_cast<char *>(buffer), "FORM", 4) == 0)
     return true;
 
   return false;
@@ -217,7 +217,7 @@ checkPSP(CFileBase *file)
   if (! file->read(buffer, 25, &num_read))
     return false;
 
-  if (strncmp((char *) buffer, "Paint Shop Pro Image File", 25) == 0)
+  if (strncmp(reinterpret_cast<char *>(buffer), "Paint Shop Pro Image File", 25) == 0)
     return true;
 
   return false;
@@ -235,7 +235,7 @@ checkPS(CFileBase *file)
   if (! file->read(buffer, 4, &num_read))
     return false;
 
-  if (strncmp((char *) buffer, "%!PS", 4) == 0)
+  if (strncmp(reinterpret_cast<char *>(buffer), "%!PS", 4) == 0)
     return true;
 
   return false;
@@ -253,7 +253,7 @@ checkSGI(CFileBase *file)
   if (! file->read(buffer, 2, &num_read))
     return false;
 
-  short magic = (buffer[0] << 8) + buffer[1];
+  short magic = short((buffer[0] << 8) + buffer[1]);
 
   if (magic == 474)
     return true;
@@ -307,7 +307,7 @@ checkXBM(CFileBase *file)
 
   CRegExp pattern("#define.*[0-9][0-9]*#define.*[0-9][0-9]*char.*\\[.*\\].*0x");
 
-  if (pattern.find((char *) buffer))
+  if (pattern.find(reinterpret_cast<char *>(buffer)))
     return true;
 
   return false;
@@ -329,7 +329,7 @@ checkXPM(CFileBase *file)
 
   buffer[num_read] = '\0';
 
-  if (strstr((char *) buffer, "XPM") != NULL)
+  if (strstr(reinterpret_cast<char *>(buffer), "XPM") != NULL)
     return true;
 
   return false;

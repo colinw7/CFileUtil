@@ -40,7 +40,7 @@ checkWAV(CFileBase *file)
 
   file->rewind();
 
-  if (! file->read((uchar *) &header, sizeof(header)))
+  if (! file->read(reinterpret_cast<uchar *>(&header), sizeof(header)))
     return false;
 
   if (strncmp(header.riff, "RIFF", 4) != 0)

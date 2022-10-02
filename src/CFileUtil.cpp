@@ -319,7 +319,7 @@ bool
 CFileUtil::
 isBadFilename(const std::string &name)
 {
-  uint len = name.size();
+  auto len = name.size();
 
   if (len == 0) return true;
 
@@ -339,7 +339,7 @@ fixBadFilename(const std::string &name)
 {
   std::string name1 = name;
 
-  uint len = name1.size();
+  auto len = name1.size();
 
   if (len == 0) return "";
 

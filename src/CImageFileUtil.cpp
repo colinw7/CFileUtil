@@ -1,4 +1,5 @@
 #include <CImageFileUtil.h>
+#include <CStrParse.h>
 
 union IntData {
   CIMAGE_INT32 l;
@@ -45,7 +46,7 @@ getImageTypeFromName(const std::string &filename)
 {
   CFile file(filename);
 
-  std::string suffix = file.getSuffix();
+  auto suffix = file.getSuffix();
 
   // TODO: store in map
   if      (CStrUtil::casecmp(suffix, "bmp" ) == 0) return CFILE_TYPE_IMAGE_BMP;
@@ -302,15 +303,66 @@ checkXBM(CFileBase *file)
 
   memset(buffer, 0, sizeof(buffer));
 
-  if (! file->read(buffer, 256, &num_read))
+  if (! file->read(buffer, 256, &num_read) && num_read < 16)
     return false;
+
+#if 1
+  auto str = std::string(reinterpret_cast<char *>(&buffer[0]));
+
+  CStrParse parse(str);
+
+  parse.skipSpace();
+
+  if (! parse.isString("#define"))
+    return false;
+
+  parse.skipLastString();
+
+  parse.skipSpace();
+  parse.skipNonSpace();
+  parse.skipSpace();
+
+  int w;
+  if (! parse.readInteger(&w))
+    return false;
+
+  parse.skipSpace();
+
+  if (! parse.isString("#define"))
+    return false;
+
+  parse.skipLastString();
+
+  parse.skipSpace();
+  parse.skipNonSpace();
+  parse.skipSpace();
+
+  int h;
+  if (! parse.readInteger(&h))
+    return false;
+
+  parse.skipSpace();
+
+  if (parse.isString("static")) {
+    parse.skipLastString();
+    parse.skipSpace();
+  }
+
+  if (! parse.isString("char"))
+    return false;
+#else
+  int i = 0;
+
+  while (buffer[i] != '\0' && isspace(buffer[i]))
+    ++i;
 
   CRegExp pattern("#define.*[0-9][0-9]*#define.*[0-9][0-9]*char.*\\[.*\\].*0x");
 
-  if (pattern.find(reinterpret_cast<char *>(buffer)))
-    return true;
+  if (! pattern.find(reinterpret_cast<char *>(&buffer[i])))
+    return false;
+#endif
 
-  return false;
+  return true;
 }
 
 bool
